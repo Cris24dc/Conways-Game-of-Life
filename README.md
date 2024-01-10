@@ -7,32 +7,26 @@ noi celule in sistem. Acest sistem evolutiv esteTuring-complete.
 Starea unui sistem este descrisa de starea cumulata a celulelor componente, iar pentru acestea
 avem urmatoarele reguli:
 
-```
+
 1.Subpopulare. Fiecare celula (care este in viata in generatia curenta) cu mai putin de doi
 vecini in viata, moare in generatia urmatoare.
-```
-```
+
 2.Continuitate celule vii.Fiecare celula (care este in viata in generatia curenta), cu doi sau
 trei vecini in viata, va exista si in generatia urmatoare.
-```
-```
+
 3.Ultrapopulare.Fiecare celula (care este in viata in generatia curenta), care are mai mult de
 trei vecini in viata, moare in generatia urmatoare.
-```
-```
+
 4.Creare.O celula moarta care are exact trei vecini in viata, va fi creata in generatia urmatoare.
-```
-```
+
 5.Continuitate celule moarte. Orice alta celula moarta, care nu se incadreaza in regula de
 creare, ramane o celula moarta.
-```
-```
+
 Vecinii unei celule se considera urmatorii 8, intr-o matrice bidimensionala:
 ```
-```
-a 00 a 01 a 02
-a 10 celula curenta a 12
-a 20 a 21 a 22
+00          01          02
+10    celula curenta    12
+20          21          22
 ```
 Definim starea unui sistem la generatianca fiind o matriceSn∈Mm×n({ 0 , 1 }) (m- numarul de
 linii, respectivn- numarul de coloane), unde elementul 0 reprezinta o celula moarta, respectiv 1
@@ -106,9 +100,7 @@ descrisa anterior. Am vazut ca rezultatul obtinut este sirul de biti:
 ```
 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0
 ```
-```
 pe care il vom considera fara spatii:
-```
 ```
 000000001000000010000000000000
 ```
@@ -124,9 +116,7 @@ o 01101111
 l 01101100
 a 01100001
 ```
-```
 Sirulparolava fi, astfel, sirul binar
-```
 ```
 011100000110000101110010011011110110110001100001
 ```
@@ -144,9 +134,7 @@ Vom considera, in acest caz, ca vom concatena iar cheia la cheia initiala:
 mesaj = 011100000110000101110010011011110110110001100001
 cheie = 000000001000000010000000000000000000001000000010000000000000
 ```
-```
 Iar apoi vom pastra din noua cheie doar cat ne este suficient pentru a cripta mesajul:
-```
 ```
 mesaj = 011100000110000101110010011011110110110001100001
 cheie = 000000001000000010000000000000000000001000000010
