@@ -1,6 +1,6 @@
 # Conway’s Game of Life
 
-<img src="./1_lI0IaLqlpXjh96Z-_RX9Dw.gif" width="55%"/>
+<img src="./conways.gif" width="55%"/>
 
 Conway’s Game of Life este unzero-player gamebidimensional, inventat de matematicianul John
 Horton Conway in anul 1970. Scopul acestui joc este de a observa evolutia unui sistem de celule,
@@ -75,7 +75,11 @@ va fi:
 0 0 0 0 0 0
 0 0 0 0 0 0
 ```
-Schema de criptare simetrica. Definim o cheie de criptare (pornind de la o configuratie
+# Schema de criptare simetrica.
+
+<img src="./encrypt.gif" width="55%"/>
+
+Definim o cheie de criptare (pornind de la o configuratie
 initialaS 0 si ok-evolutie) ca fiind operatia<S 0 , k >, care reprezinta tabloulunidimensionalde
 date (inteles ca sir de biti) obtinut in urma concatenarii liniilor din matrice din matricea extinsa
 obtinuta,Sk.
