@@ -60,7 +60,7 @@ Following the rules, we compute the next generation S₁ as:
 0 0 0 0 0 0
 ```
 
-## Schema de criptare simetrica.
+## Symmetric Encryption Scheme
 
 <img src="./img/encrypt.gif" width="75%"/>
 <hr>
