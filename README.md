@@ -1,56 +1,48 @@
 # Conway’s Game of Life
 
-<img src="./metapixel.gif" width="95%"/>
+<img src="./img/metapixel.gif" width="75%"/>
 
-Conway’s Game of Life este unzero-player gamebidimensional, inventat de matematicianul John
-Horton Conway in anul 1970. Scopul acestui joc este de a observa evolutia unui sistem de celule,
-pornind de la o configuratie initiala, introducand reguli referitoare la moartea, respectiv crearea unei
-noi celule in sistem. Acest sistem evolutiv esteTuring-complete.
-Starea unui sistem este descrisa de starea cumulata a celulelor componente, iar pentru acestea
-avem urmatoarele reguli:
+## Overview
 
-1.Subpopulare. Fiecare celula (care este in viata in generatia curenta) cu mai putin de doi
-vecini in viata, moare in generatia urmatoare.
+Conway’s Game of Life is a two-dimensional zero-player game, invented by mathematician John Horton Conway in 1970. The objective is to observe the evolution of a system of cells based on an initial configuration, following rules that dictate the death or creation of new cells. This system is Turing-complete.
 
-2.Continuitate celule vii.Fiecare celula (care este in viata in generatia curenta), cu doi sau
-trei vecini in viata, va exista si in generatia urmatoare.
+The system’s state is described by the state of individual cells, governed by the following rules:
 
-3.Ultrapopulare.Fiecare celula (care este in viata in generatia curenta), care are mai mult de
-trei vecini in viata, moare in generatia urmatoare.
+- **Underpopulation**: A live cell with fewer than two live neighbors dies in the next generation.
 
-4.Creare.O celula moarta care are exact trei vecini in viata, va fi creata in generatia urmatoare.
+- **Survival**: A live cell with two or three live neighbors survives to the next generation.
 
-5.Continuitate celule moarte. Orice alta celula moarta, care nu se incadreaza in regula de
-creare, ramane o celula moarta.
+- **Overpopulation**: A live cell with more than three live neighbors dies in the next generation.
 
-Vecinii unei celule se considera urmatorii 8, intr-o matrice bidimensionala:
+- **Creation**: A dead cell with exactly three live neighbors becomes alive in the next generation.
 
-```
-00          01          02
-10    celula curenta    12
-20          21          22
+- **Stasis**: Any dead cell not satisfying the creation rule remains dead.
+
+**The 8 neighbors of a cell are considered as follows in a 2D matrix:**
+
+```R
+00   01   02
+10   cell 12
+20   21   22
 ```
 
-Definim starea unui sistem la generatianca fiind o matriceSn∈Mm×n({ 0 , 1 }) (m- numarul de
-linii, respectivn- numarul de coloane), unde elementul 0 reprezinta o celula moarta, respectiv 1
-reprezinta o celula in viata (in generatia curenta).
-Definim ok-evolutie (k≥0) a sistemului o iteratieS 0 → S 1 → ··· → Sk, unde fiecareSi+1se
-obtine dinSi, aplicand cele cinci reguli enuntate mai sus.
-Observatie.Pentru celulele aflate pe prima linie, prima coloana, ultima linie, respectiv ultima
-coloana, se considera extinderea la 8 vecini, prin considerarea celor carenuse afla in matrice ca
-fiind celule moarte.
-Exemplificare.Fie urmatoarea configuratie initialaS 0 :
+We define the system state at generation n as a matrix Sn ∈ M(m×n)({0, 1}), where m is the number of rows, n is the number of columns, 0 represents a dead cell, and 1 represents a live cell. A k-evolution (k ≥ 0) is an iteration S₀ → S₁ → ... → Sₖ, where each Sᵢ+1 is obtained from Sᵢ by applying the rules described above.
 
-```
+For cells on the edges of the matrix (first/last rows or columns), the system is extended by treating cells outside the matrix as dead.
+
+## Example
+
+Given the initial configuration S₀:
+
+```R
 0 1 1 0
 1 0 0 0
 0 0 1 1
 ```
 
-In primul rand, vom considera extinderea acestei matriceS 0 de dimensiuni 3 × 4 intr-o matrice
-extinsaS 0 de dimensiuni 5 × 6 , astfel:
+We first extend the matrix to a 5x6 grid, treating the outer cells as dead:
 
-```
+```R
 0 0 0 0 0 0
 0 0 1 1 0 0
 0 1 0 0 0 0
@@ -58,19 +50,9 @@ extinsaS 0 de dimensiuni 5 × 6 , astfel:
 0 0 0 0 0 0
 ```
 
-In cele ce urmeaza, vom lucra doar in interiorul matricei principale, dar considerand extinderea
-pentru procesarea corecta a vecinilor. Vom parcurge fiecare element, si vom vedea ce regula evolutiva
-putem aplica. De exemplu, pentru elementul de pe pozitia(0,0)in matricea initiala, vom aplica
-regula de continuitate a celulelor moarte, deoarece este o celula moarta si nu are exact trei vecini in
-viata.
-Urmatoarea celula este in viata, si are exact doi vecini in viata, astfel ca se aplica regula conti-
-nuitatii celulelor in viata.
-Pentru celula de pe pozitia(0,2)inS 0 , observam ca are un singur vecin, astfel ca se aplica
-regula de subpopulare - celula va muri in generatia urmatoare.
-Urmand acelasi rationament pentru toate celulele, configuratia sistemului intr-o iteratie (inS 1 )
-va fi:
+Following the rules, we compute the next generation S₁ as:
 
-```
+```R
 0 0 0 0 0 0
 0 0 1 0 0 0
 0 0 0 0 1 0
@@ -78,49 +60,33 @@ va fi:
 0 0 0 0 0 0
 ```
 
-# Schema de criptare simetrica.
+## Schema de criptare simetrica.
 
-<img src="./encrypt.gif" width="75%"/>
+<img src="./img/encrypt.gif" width="75%"/>
+<hr>
+We define an encryption key, starting from an initial configuration S₀ and applying a k-evolution, as the operation <S₀, k>. This produces a one-dimensional data array (bit string) by concatenating the rows of the extended matrix Sₖ.
 
-Definim o cheie de criptare (pornind de la o configuratie
-initialaS 0 si ok-evolutie) ca fiind operatia<S 0 , k >, care reprezinta tabloulunidimensionalde
-date (inteles ca sir de biti) obtinut in urma concatenarii liniilor din matrice din matricea extinsa
-obtinuta,Sk.
-De exemplu, pornind de la configuratia anterioaraS 0 , si aplicand doar o 1-evolutie, se obtine
-matricea extinsaS 1 descrisa anterior, care va avea ca efect al aplicarii operatiei<S 0 , 1 >obtinerea
-urmatorului tablou unidimensional (inteles ca sir de biti):
+For instance, starting with S₀ and applying a 1-evolution, we obtain the extended matrix S₁, which gives the following bit string:
 
-```
-0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0
-```
-
-Considerammun mesaj in clar (un sir de caractere fara spatii). Criptarea{m}<S 0 ,k>va insemna
-XOR-area mesajului in clarmcu rezultatul dat de<S 0 , k >. Sunt urmatoarele cazuri:
-
-- daca mesajul si cheia au aceeasi lungime, se XOR-eaza element cu element, pana se obtine
-  rezultatul;
-- daca mesajul este mai scurt decat cheia, se foloseste doar prima parte din cheie, corespunza-
-  toare lungimii mesajului;
-- daca mesajul este mai lung decat cheia, se considera replicarea cheii de oricate ori este nevoie
-  pentru a cripta intreg mesajul.
-
-Consideram cam=parola, si utilizam drept cheie<S 0 , 1 >, undeS 0 este configuratia initiala
-descrisa anterior. Am vazut ca rezultatul obtinut este sirul de biti:
-
-```
-0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0
-```
-
-pe care il vom considera fara spatii:
-
-```
+```R
 000000001000000010000000000000
 ```
 
-Pentru a efectua criptarea, trebuie sa analizam sirul de criptat, si anumeparola. Vom vedea
-care este codificarea ASCII (binara) a fiecarui caracter din acest sir:
+Given a plaintext message m (a string without spaces), encryption {m} <S₀, k> involves XOR-ing the message with the result of <S₀, k>. The cases are:
 
+- If the message and key are the same length, XOR each element.
+- If the message is shorter, use the corresponding portion of the key.
+- If the message is longer, repeat the key as many times as needed.
+<hr>
+Let m = "parola" (password) and the key be <S₀, 1>. The bit string is:
+
+```R
+000000001000000010000000000000
 ```
+
+The binary ASCII encoding of "parola" is:
+
+```R
 p 01110000
 a 01100001
 r 01110010
@@ -129,55 +95,29 @@ l 01101100
 a 01100001
 ```
 
-Sirulparolava fi, astfel, sirul binar
+Thus, "parola" becomes:
 
-```
+```R
 011100000110000101110010011011110110110001100001
 ```
 
-Observam, in acest caz, ca sirul de criptat este mai lung decat cheia de criptare, astfel ca daca
-incercam acum o XOR-are, am avea urmatoarea situatie:
+Since the message is longer than the key, we repeat the key:
 
-```
+```R
 mesaj = 011100000110000101110010011011110110110001100001
 cheie = 000000001000000010000000000000
 ```
 
-```
-Vom considera, in acest caz, ca vom concatena iar cheia la cheia initiala:
+XOR-ing gives the encrypted message:
+
+```R
+encrypted = 011100001110000111110010011011110110111001100011
 ```
 
-```
-mesaj = 011100000110000101110010011011110110110001100001
-cheie = 000000001000000010000000000000000000001000000010000000000000
+In hexadecimal, the result is:
+
+```R
+0x70E1F26F6E63
 ```
 
-Iar apoi vom pastra din noua cheie doar cat ne este suficient pentru a cripta mesajul:
-
-```
-mesaj = 011100000110000101110010011011110110110001100001
-cheie = 000000001000000010000000000000000000001000000010
-```
-
-Mesajul criptat se va obtine prin XOR-are element cu element, stiind ca0 XOR 0 = 1 XOR 1 =
-0 , respectiv0 XOR 1 = 1 XOR 0 = 1. In acest caz,
-
-```
-mesaj = 011100000110000101110010011011110110110001100001
-cheie = 000000001000000010000000000000000000001000000010
-cript = 011100001110000111110010011011110110111001100011
-```
-
-Mesajul criptat afisat va fi in hexadecimal (pentru a nu fi probleme de afisare a caracterelor), iar
-in acest caz vom avea:
-
-```
-cript = 0111 0000 1110 0001 1111 0010 0110 1111 0110 1110 0110 0011
-= 7 0 E 1 F 2 6 F 6 E 6 3
-= 0x70E1F26F6E
-```
-
-Pentru decriptare se aplica acelasi mecanism, mesajul decriptat se va XOR-a cu cheia calculata,
-si vom avea in finalm XOR k XOR k = m. (k XOR k = 0, iarm XOR 0 = m, din asociativitatea lui
-XOR, respectiv din regulile de calcul). La decriptare, mesajul nu va fi afisat in hexadecimal, ci in
-clar.
+For decryption, the same XOR process is applied, using the key to recover the original message.
