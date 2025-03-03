@@ -1,24 +1,25 @@
-# Conway’s Game of Life
+# **Conway’s Game of Life & Symmetric Encryption**  
 
 <img src="./img/metapixel.gif" width="75%"/>
 
-## Overview
+## **📌 Overview**  
 
-Conway’s Game of Life is a two-dimensional zero-player game, invented by mathematician John Horton Conway in 1970. The objective is to observe the evolution of a system of cells based on an initial configuration, following rules that dictate the death or creation of new cells. This system is Turing-complete.
+**Conway’s Game of Life** is a two-dimensional, zero-player game invented by mathematician **John Horton Conway** in 1970. The system evolves based on a set of predefined rules, determining the survival, death, or creation of cells over multiple generations. This model is **Turing-complete**, meaning it can simulate any computational system.
 
-The system’s state is described by the state of individual cells, governed by the following rules:
+Additionally, we define a **symmetric encryption scheme** based on Conway's Game of Life, where a key is derived from the evolution of an initial configuration, transforming it into a bit string for secure encryption.
 
-- **Underpopulation**: A live cell with fewer than two live neighbors dies in the next generation.
 
-- **Survival**: A live cell with two or three live neighbors survives to the next generation.
+## **🌱 Game Rules**  
 
-- **Overpopulation**: A live cell with more than three live neighbors dies in the next generation.
+Each cell in the system follows these fundamental rules:  
 
-- **Creation**: A dead cell with exactly three live neighbors becomes alive in the next generation.
+✔ **Underpopulation** – A live cell with **fewer than two** live neighbors dies.  
+✔ **Survival** – A live cell with **two or three** live neighbors survives.  
+✔ **Overpopulation** – A live cell with **more than three** live neighbors dies.  
+✔ **Creation** – A dead cell with **exactly three** live neighbors becomes alive.  
+✔ **Stasis** – Any dead cell **not satisfying** the creation rule remains dead.  
 
-- **Stasis**: Any dead cell not satisfying the creation rule remains dead.
-
-**The 8 neighbors of a cell are considered as follows in a 2D matrix:**
+**Cell neighbors are defined as follows in a 2D matrix:**  
 
 ```R
 00   01   02
@@ -26,13 +27,20 @@ The system’s state is described by the state of individual cells, governed by 
 20   21   22
 ```
 
-We define the system state at generation n as a matrix Sn ∈ M(m×n)({0, 1}), where m is the number of rows, n is the number of columns, 0 represents a dead cell, and 1 represents a live cell. A k-evolution (k ≥ 0) is an iteration S₀ → S₁ → ... → Sₖ, where each Sᵢ+1 is obtained from Sᵢ by applying the rules described above.
+The system state at generation **n** is represented as a matrix **Sₙ ∈ M(m×n)({0, 1})**, where:  
+- **m** = number of rows  
+- **n** = number of columns  
+- **0** = dead cell  
+- **1** = live cell  
 
-For cells on the edges of the matrix (first/last rows or columns), the system is extended by treating cells outside the matrix as dead.
+A **k-evolution** (k ≥ 0) is an iteration sequence **S₀ → S₁ → ... → Sₖ**, where each state **Sᵢ+1** is derived from **Sᵢ** based on the game rules.
 
-## Example
+For **edge cells** (border of the matrix), we assume cells **outside the matrix are dead**.
 
-Given the initial configuration S₀:
+
+## **🔍 Example**  
+
+### **Initial Configuration S₀:**  
 
 ```R
 0 1 1 0
@@ -40,7 +48,7 @@ Given the initial configuration S₀:
 0 0 1 1
 ```
 
-We first extend the matrix to a 5x6 grid, treating the outer cells as dead:
+We first **extend the matrix** (adding a border of dead cells):  
 
 ```R
 0 0 0 0 0 0
@@ -50,7 +58,7 @@ We first extend the matrix to a 5x6 grid, treating the outer cells as dead:
 0 0 0 0 0 0
 ```
 
-Following the rules, we compute the next generation S₁ as:
+Applying the **Game of Life rules**, the next generation **S₁** is:  
 
 ```R
 0 0 0 0 0 0
@@ -60,31 +68,38 @@ Following the rules, we compute the next generation S₁ as:
 0 0 0 0 0 0
 ```
 
-## Symmetric Encryption Scheme
+
+## **🔐 Symmetric Encryption Scheme**  
 
 <img src="./img/encrypt.gif" width="75%"/>
 <hr>
-We define an encryption key, starting from an initial configuration S₀ and applying a k-evolution, as the operation <S₀, k>. This produces a one-dimensional data array (bit string) by concatenating the rows of the extended matrix Sₖ.
 
-For instance, starting with S₀ and applying a 1-evolution, we obtain the extended matrix S₁, which gives the following bit string:
+We define an **encryption key** using an initial configuration **S₀** and applying a **k-evolution**. The resulting matrix **Sₖ** is transformed into a **bit string** by concatenating its rows.
 
-```R
-000000001000000010000000000000
-```
+### **🔑 Key Generation Process**  
 
-Given a plaintext message m (a string without spaces), encryption {m} <S₀, k> involves XOR-ing the message with the result of <S₀, k>. The cases are:
+1️⃣ Start with an **initial configuration S₀**  
+2️⃣ Apply **k-evolutions** to generate **Sₖ**  
+3️⃣ Convert **Sₖ** into a **bit string** (by row-wise concatenation)  
 
-- If the message and key are the same length, XOR each element.
-- If the message is shorter, use the corresponding portion of the key.
-- If the message is longer, repeat the key as many times as needed.
-<hr>
-Let m = "parola" (password) and the key be <S₀, 1>. The bit string is:
+For example, with **S₀** and **k = 1**, the extended matrix **S₁** generates the bit string:  
 
 ```R
 000000001000000010000000000000
 ```
 
-The binary ASCII encoding of "parola" is:
+### **📌 Encryption Process**  
+
+Given a **plaintext message** `m` (string without spaces), we **XOR** it with the bit string generated from **S₀, k**.  
+
+Rules:  
+✔ If `m` and the key are the **same length**, XOR each bit.  
+✔ If `m` is **shorter**, use only the corresponding part of the key.  
+✔ If `m` is **longer**, repeat the key until fully covered.  
+
+#### **Example: Encrypting "parola"**  
+
+1️⃣ Convert **message** "parola" to **binary ASCII**:  
 
 ```R
 p 01110000
@@ -95,29 +110,32 @@ l 01101100
 a 01100001
 ```
 
-Thus, "parola" becomes:
+Concatenated:  
 
 ```R
 011100000110000101110010011011110110110001100001
 ```
 
-Since the message is longer than the key, we repeat the key:
+2️⃣ **Repeat key** to match message length:  
 
 ```R
-mesaj = 011100000110000101110010011011110110110001100001
-cheie = 000000001000000010000000000000
+message = 011100000110000101110010011011110110110001100001
+key     = 000000001000000010000000000000
 ```
 
-XOR-ing gives the encrypted message:
+3️⃣ **XOR** message with key:  
 
 ```R
 encrypted = 011100001110000111110010011011110110111001100011
 ```
 
-In hexadecimal, the result is:
+4️⃣ Convert **to hexadecimal**:  
 
 ```R
 0x70E1F26F6E63
 ```
 
-For decryption, the same XOR process is applied, using the key to recover the original message.
+### **📌 Decryption Process**  
+
+Decryption follows the same **XOR operation** with the **same key**, recovering the **original message**.
+
